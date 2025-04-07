@@ -1,18 +1,38 @@
-# KvStore
+# KV Store API
 
-To start your Phoenix server:
+A simple Key-Value Store built with Phoenix Framework. This API allows  to perform basic operations (create, retrieve, delete) on key-value pairs.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+From the root of the project, run:
+docker build -t kv-store .
+docker run -d -p 4000:4000 kv-store
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+POST /api/kv
+Store a new key-value pair.
 
-## Learn more
+Request Body:
+json
+{
+  "key": "string",
+  "value": "string"
+}
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+GET /api/kv/:key
+Retrieve the value associated with the given key.
+
+Response:
+json
+{
+  "key": "test",
+  "value": "hello"
+}
+
+DELETE /api/kv/:key
+Delete a key-value pair.
+
+Response:
+json
+{
+  "status": "success",
+  "message": "Key-value pair deleted successfully."
+}
