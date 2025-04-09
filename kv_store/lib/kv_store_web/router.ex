@@ -9,9 +9,7 @@ defmodule KvStoreWeb.Router do
     pipe_through :api
 
     get "/kv/:key", KVController, :get
-    post "/kv", KVController, :put
+    put "/kv", KVController, :put
     delete "/kv/:key", KVController, :delete
   end
 end
-
-

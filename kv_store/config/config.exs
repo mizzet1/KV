@@ -19,17 +19,7 @@ config :kv_store, KvStoreWeb.Endpoint,
     formats: [json: KvStoreWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: KvStore.PubSub,
-  live_view: [signing_salt: "KmVTB4DG"]
-
-# Configures the mailer
-#
-# By default it uses the "Local" adapter which stores the emails
-# locally. You can see the emails in your browser, at "/dev/mailbox".
-#
-# For production it's recommended to configure a different adapter
-# at the `config/runtime.exs`.
-config :kv_store, KvStore.Mailer, adapter: Swoosh.Adapters.Local
+  pubsub_server: KvStore.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,
