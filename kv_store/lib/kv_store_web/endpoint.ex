@@ -8,11 +8,6 @@ defmodule KvStoreWeb.Endpoint do
     same_site: "Lax"
   ]
 
-  # Remove the LiveView socket, if not using LiveView
-  # socket "/live", Phoenix.LiveView.Socket,
-  #   websocket: [connect_info: [session: @session_options]],
-  #   longpoll: [connect_info: [session: @session_options]]
-
   plug Plug.Static,
     at: "/",
     from: :kv_store,

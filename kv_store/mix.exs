@@ -19,7 +19,7 @@ defmodule KvStore.MixProject do
   def application do
     [
       mod: {KvStore.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :telemetry]
     ]
   end
 
@@ -35,9 +35,10 @@ defmodule KvStore.MixProject do
       {:gettext, "~> 0.26"},
       {:bandit, "~> 1.5"},
       {:dns_cluster, "~> 0.1.1"},
-      {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.0"}
-    ]
+      {:plug_cowboy, "~> 2.5"},
+      {:telemetry_metrics, "~> 0.6"},
+      {:phoenix_live_dashboard, "~> 0.8"},
+    ] 
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

@@ -1,17 +1,10 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Config module.
-#
-# This configuration file is loaded before any dependency and
-# is restricted to this project.
-
-# General application configuration
+# config/config.exs
 import Config
 
 config :kv_store,
   ecto_repos: [KvStore.Repo],
   generators: [timestamp_type: :utc_datetime]
 
-# Configures the endpoint
 config :kv_store, KvStoreWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
@@ -19,16 +12,13 @@ config :kv_store, KvStoreWeb.Endpoint,
     formats: [json: KvStoreWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: KvStore.PubSub
+  pubsub_server: KvStore.PubSub,
+  live_view: [signing_salt: "GDdbXmzi5YAgpRgI"]  
 
-# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

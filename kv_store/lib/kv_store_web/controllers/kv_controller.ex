@@ -5,8 +5,13 @@ defmodule KvStoreWeb.KVController do
 
   def get(conn, %{"key" => key}) do
     case KV.get(key) do
-      {:ok, value} -> json(conn, %{key: key, value: value})
-      :error -> send_resp(conn, 404, "Key not found")
+      {:ok, value} ->
+        # Ensure we unwrap any safe HTML data, if any
+        value = Phoenix.HTML.safe_to_string(value)
+        json(conn, %{key: key, value: value})
+
+      :error ->
+        send_resp(conn, 404, "Key not found")
     end
   end
 
