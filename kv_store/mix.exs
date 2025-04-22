@@ -31,14 +31,14 @@ defmodule KvStore.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.7.21"},
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.4.4"},
       {:gettext, "~> 0.26"},
       {:bandit, "~> 1.5"},
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
       {:telemetry_metrics, "~> 0.6"},
-      {:phoenix_live_dashboard, "~> 0.8"},
-    ] 
+      {:phoenix_live_dashboard, "~> 0.8"}
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
@@ -49,4 +49,3 @@ defmodule KvStore.MixProject do
     ]
   end
 end
-

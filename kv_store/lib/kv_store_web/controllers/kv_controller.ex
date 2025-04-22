@@ -1,13 +1,10 @@
 defmodule KvStoreWeb.KVController do
   use KvStoreWeb, :controller
-
   alias KvStore.KV
 
   def get(conn, %{"key" => key}) do
     case KV.get(key) do
       {:ok, value} ->
-        # Ensure we unwrap any safe HTML data, if any
-        value = Phoenix.HTML.safe_to_string(value)
         json(conn, %{key: key, value: value})
 
       :error ->
@@ -16,12 +13,16 @@ defmodule KvStoreWeb.KVController do
   end
 
   def put(conn, %{"key" => key, "value" => value}) do
-    KV.put(key, value)
-    json(conn, %{status: "ok"})
+    case KV.put(key, value) do
+      :ok -> json(conn, %{status: "ok"})
+      {:error, reason} -> send_resp(conn, 500, reason)
+    end
   end
 
   def delete(conn, %{"key" => key}) do
-    KV.delete(key)
-    json(conn, %{status: "deleted"})
+    case KV.delete(key) do
+      :ok -> json(conn, %{status: "deleted"})
+      {:error, reason} -> send_resp(conn, 500, reason)
+    end
   end
 end

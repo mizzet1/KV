@@ -9,40 +9,31 @@ defmodule KvStore.KV do
 
   def get(key) do
     :telemetry.span([:kv_store, :operation], %{operation: :get}, fn ->
-      result = case :ets.lookup(@table, key) do
-        [{^key, value}] -> {:ok, value}
-        [] -> :error
-      end
-      response = case result do
-        {:ok, value} -> %{status: "ok", key: key, value: value}
-        :error -> %{status: "error", message: "Key not found"}
-      end
+      result =
+        case :ets.lookup(@table, key) do
+          [{^key, value}] -> {:ok, value}
+          [] -> :error
+        end
 
-      # Return the response as a map, not a tuple
-      %{result: response}
+      {result, %{key: key}}
     end)
+    |> elem(0)
   end
 
   def put(key, value) do
     :telemetry.span([:kv_store, :operation], %{operation: :put}, fn ->
       :ets.insert(@table, {key, value})
-
-     
-      response = %{status: "ok", message: "Value inserted"}
-
-      %{result: response}  # Return a map
+      {:ok, %{key: key}}
     end)
+    |> elem(0)
   end
 
   def delete(key) do
     :telemetry.span([:kv_store, :operation], %{operation: :delete}, fn ->
       :ets.delete(@table, key)
-
-    
-      response = %{status: "ok", message: "Key deleted"}
-
-      %{result: response}  # Return a map
+      {:ok, %{key: key}}
     end)
+    |> elem(0)
   end
 
   def init(_) do
@@ -50,4 +41,3 @@ defmodule KvStore.KV do
     {:ok, %{}}
   end
 end
-

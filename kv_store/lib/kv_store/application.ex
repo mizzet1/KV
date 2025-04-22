@@ -4,7 +4,6 @@ defmodule KvStore.Application do
   def start(_type, _args) do
     children = [
       KvStore.KV,
-      KvStore.Metrics,
       KvStoreWeb.Endpoint
     ]
 

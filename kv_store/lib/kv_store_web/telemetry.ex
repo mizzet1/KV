@@ -3,10 +3,14 @@ defmodule KvStoreWeb.Telemetry do
 
   def metrics do
     [
-      summary("kv_store.latency.duration",
+      summary("kv store calls latency",
         unit: {:native, :millisecond},
         tags: [:operation],
-        description: "KV operation latency"
+        description: "Time taken for KV store operations (get, put, delete)"
+      ),
+      counter("kv store calls count",
+        tags: [:operation],
+        description: "Total number of KV store operations"
       )
     ]
   end
