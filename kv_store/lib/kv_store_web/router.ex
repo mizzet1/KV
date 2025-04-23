@@ -25,7 +25,9 @@ defmodule KvStoreWeb.Router do
     scope "/" do
       pipe_through(:browser)
 
-      live_dashboard("/dashboard", metrics: KvStoreWeb.Telemetry)
+      live_dashboard("/dashboard",
+        metrics: KvStoreWeb.Telemetry
+      )
     end
   end
 end
