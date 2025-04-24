@@ -8,40 +8,26 @@ defmodule KvStoreWeb.Telemetry do
 
   @impl true
   def init(_arg) do
-    attach_handlers()
-
     children = [
-      {Telemetry.Metrics.ConsoleReporter, metrics: metrics()}
+      {:telemetry_poller, measurements: periodic_measurements(), period: 10_000}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
 
-  defp attach_handlers do
-    :telemetry.attach(
-      "kv-store-metrics-handler",
-      [:kv_store, :operation, :stop],
-      &__MODULE__.handle_event/4,
-      nil
-    )
-  end
-
-  def handle_event([:kv_store, :operation, :stop], measurements, metadata, _config) do
-    :telemetry.execute([:kv_store, :operation, :duration], measurements, metadata)
-    :telemetry.execute([:kv_store, :operation, :count], %{value: 1}, metadata)
-  end
-
   def metrics do
     [
-      summary("kv_store.operation.duration",
-        unit: {:native, :millisecond},
-        tags: [:operation],
-        description: "Time taken for KV store operations"
-      ),
-      counter("kv_store.operation.count",
-        tags: [:operation],
-        description: "Count of KV store operations"
-      )
+      summary("phoenix.endpoint.stop.duration", unit: {:native, :millisecond}),
+      summary("phoenix.router_dispatch.stop.duration", tags: [:route], unit: {:native, :millisecond}),
+
+      summary("vm.memory.total", unit: {:byte, :kilobyte}),
+      summary("vm.total_run_queue_lengths.total"),
+      summary("vm.total_run_queue_lengths.cpu"),
+      summary("vm.total_run_queue_lengths.io")
     ]
+  end
+
+  defp periodic_measurements do
+    []
   end
 end

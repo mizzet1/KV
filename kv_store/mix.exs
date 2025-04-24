@@ -36,8 +36,12 @@ defmodule KvStore.MixProject do
       {:bandit, "~> 1.5"},
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
+      {:telemetry, "~> 1.0"},
       {:telemetry_metrics, "~> 0.6"},
-      {:phoenix_live_dashboard, "~> 0.8"}
+      {:telemetry_poller, "~> 1.0"},
+      {:phoenix_live_dashboard, "~> 0.8"},
+      {:phoenix_live_view, "~> 0.20"},
+    
     ]
   end
 

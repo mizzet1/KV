@@ -3,42 +3,27 @@ defmodule KvStore.KV do
 
   @table :kv_store
 
+  # The API for the Client
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
   def get(key) do
-    :telemetry.span([:kv_store, :operation], %{operation: :get}, fn ->
-      case :ets.lookup(@table, key) do
-        [{^key, value}] -> {{:ok, value}, %{key: key}}
-        [] -> {{:error, :not_found}, %{key: key}}
-      end
-    end)
-    |> elem(0)
+    case :ets.lookup(@table, key) do
+      [{^key, value}] -> {:ok, value}
+      [] -> :error
+    end
   end
 
   def put(key, value) do
-    :telemetry.span([:kv_store, :operation], %{operation: :put}, fn ->
-      try do
-        :ets.insert(@table, {key, value})
-        {{:ok, :inserted}, %{key: key}}
-      rescue
-        e -> {{:error, Exception.message(e)}, %{key: key}}
-      end
-    end)
-    |> elem(0)
+    :ets.insert(@table, {key, value})
+    :ok
   end
 
   def delete(key) do
-    :telemetry.span([:kv_store, :operation], %{operation: :delete}, fn ->
-      try do
-        :ets.delete(@table, key)
-        {{:ok, :deleted}, %{key: key}}
-      rescue
-        e -> {{:error, Exception.message(e)}, %{key: key}}
-      end
-    end)
-    |> elem(0)
+    :ets.delete(@table, key)
+    :ok
   end
 
   def init(_) do
